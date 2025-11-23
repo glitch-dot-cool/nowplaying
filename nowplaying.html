@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        :root {
+            --fade-duration: 500ms;
+            --track-title: "";
+            --background: rgba(0, 0, 0, 0.55);
+            --padding: 0.5em 1em;
+        }
+
+        body {
+            margin: 0;
+            background: transparent;
+            font-family: Roboto;
+            /* display: flex; */
+            /* align-items: center; */
+            /* justify-content: center; */
+        }
+
+        @keyframes glitch1 {
+            0% {
+                clip: rect(64px, 9999px, 94px, 0);
+            }
+
+            10% {
+                clip: rect(87px, 9999px, 27px, 0);
+            }
+
+            20% {
+                clip: rect(53px, 9999px, 82px, 0);
+            }
+
+            30% {
+                clip: rect(25px, 9999px, 68px, 0);
+            }
+
+            40% {
+                clip: rect(41px, 9999px, 26px, 0);
+            }
+
+            50% {
+                clip: rect(6px, 9999px, 78px, 0);
+            }
+
+            60% {
+                clip: rect(9px, 9999px, 70px, 0);
+            }
+
+            70% {
+                clip: rect(1px, 9999px, 46px, 0);
+            }
+
+            80% {
+                clip: rect(83px, 9999px, 64px, 0);
+            }
+
+            90% {
+                clip: rect(23px, 9999px, 76px, 0);
+            }
+
+            100% {
+                clip: rect(59px, 9999px, 49px, 0);
+            }
+        }
+
+        @keyframes glitch2 {
+            0% {
+                clip: rect(71px, 9999px, 85px, 0);
+            }
+
+            10% {
+                clip: rect(19px, 9999px, 8px, 0);
+            }
+
+            20% {
+                clip: rect(74px, 9999px, 66px, 0);
+            }
+
+            30% {
+                clip: rect(30px, 9999px, 91px, 0);
+            }
+
+            40% {
+                clip: rect(37px, 9999px, 27px, 0);
+            }
+
+            50% {
+                clip: rect(86px, 9999px, 19px, 0);
+            }
+
+            60% {
+                clip: rect(62px, 9999px, 54px, 0);
+            }
+
+            70% {
+                clip: rect(96px, 9999px, 71px, 0);
+            }
+
+            80% {
+                clip: rect(14px, 9999px, 29px, 0);
+            }
+
+            90% {
+                clip: rect(32px, 9999px, 7px, 0);
+            }
+
+            100% {
+                clip: rect(46px, 9999px, 92px, 0);
+            }
+        }
+
+        #track,
+        #track::before,
+        #track::after {
+            padding: var(--padding);
+        }
+
+        #track {
+            font-size: 2rem;
+            background: var(--background);
+            border-radius: 4px;
+            color: white;
+            opacity: 1;
+            transition: opacity var(--fade-duration) ease;
+            will-change: opacity;
+        }
+
+        #track::before,
+        #track::after {
+            content: var(--track-title);
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #track::before {
+            left: 1px;
+            text-shadow: -1px 0 rgba(26, 26, 26, 0.85);
+            animation: glitch1 1.3s linear alternate-reverse infinite;
+        }
+
+        #track::after {
+            left: -1px;
+            text-shadow: -1px 0 rgba(26, 26, 26, 0.85);
+            animation: glitch2 1s ease-out alternate-reverse infinite;
+        }
+
+        #track.hidden {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="track"></div>
+
+    <script>
+        // CONFIGURATION
+        const LOCAL_TRACKLIST_FILE_NAME = "nowplaying.txt";
+        const DISPLAY_PREFIX = "now playing:"
+        const FETCH_INTERVAL = 5000;
+        const CSS_TRANSITION_TIME = getCssTransitionTime();
+
+        let currentTrack = "";
+
+        async function fetchTrack() {
+            try {
+                const url = `${LOCAL_TRACKLIST_FILE_NAME}?cachebust=${Date.now()}`
+                const response = await fetch(url);
+                const text = await response.text();
+                return text.trim();
+            } catch (e) {
+                console.error("Error reading nowplaying.txt", e);
+                return "";
+            }
+        }
+
+        function getCssTransitionTime() {
+            const fadeDurationStr = getComputedStyle(document.documentElement)
+                .getPropertyValue('--fade-duration')
+                .trim();
+
+            const fadeDuration = parseFloat(fadeDurationStr);
+            return fadeDuration;
+        }
+
+        async function updateTrack() {
+            const newTrack = await fetchTrack();
+
+            if (newTrack === currentTrack) return;
+
+            const el = document.getElementById("track");
+
+            el.classList.add("hidden");
+
+            // wait for fade-out to finish
+            setTimeout(() => {
+                const updatedText = `${DISPLAY_PREFIX} ${newTrack}`;
+
+                // update the --track-title CSS variable for the glitch effect to work
+                el.style.setProperty("--track-title", `"${updatedText}"`);
+
+                el.textContent = newTrack
+                    ? updatedText
+                    : "";
+
+                currentTrack = newTrack;
+
+                el.classList.remove("hidden");
+            }, CSS_TRANSITION_TIME);
+        }
+
+        updateTrack();
+
+        setInterval(updateTrack, FETCH_INTERVAL);
+    </script>
+
+</body>
+
+</html>
