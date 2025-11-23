@@ -15,9 +15,6 @@
             margin: 0;
             background: transparent;
             font-family: Roboto;
-            /* display: flex; */
-            /* align-items: center; */
-            /* justify-content: center; */
         }
 
         @keyframes glitch1 {
@@ -112,6 +109,17 @@
             }
         }
 
+        #wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #wrapper,
+        #track {
+            position: relative;
+        }
+
         #track,
         #track::before,
         #track::after {
@@ -157,7 +165,9 @@
 
 <body>
 
-    <div id="track"></div>
+    <div id="wrapper">
+        <div id="track"></div>
+    </div>
 
     <script>
         // CONFIGURATION
