@@ -174,6 +174,7 @@
         const LOCAL_TRACKLIST_FILE_NAME = "nowplaying.txt";
         const DISPLAY_PREFIX = "now playing:"
         const FETCH_INTERVAL = 5000;
+        const ENABLE_GLITCH_EFFECT = true;
         const CSS_TRANSITION_TIME = getCssTransitionTime();
 
         let currentTrack = "";
@@ -212,8 +213,10 @@
             setTimeout(() => {
                 const updatedText = `${DISPLAY_PREFIX} ${newTrack}`;
 
-                // update the --track-title CSS variable for the glitch effect to work
-                el.style.setProperty("--track-title", `"${updatedText}"`);
+                if (ENABLE_GLITCH_EFFECT) {
+                    // update the --track-title CSS variable for the glitch effect to work
+                    el.style.setProperty("--track-title", `"${updatedText}"`);
+                }
 
                 el.textContent = newTrack
                     ? updatedText
