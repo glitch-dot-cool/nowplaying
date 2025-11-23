@@ -2,6 +2,8 @@
 
 a simple html-based application for displaying track titles in OBS.
 
+![demo image](./example.png)
+
 ### how it works
 
 very primitively - copy/paste a track title into `nowplaying.txt` and the application will poll it for changes. when it sees a change, it will fade out the old track title and fade in the new one. that's it.
