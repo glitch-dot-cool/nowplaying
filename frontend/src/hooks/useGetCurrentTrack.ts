@@ -5,7 +5,9 @@ export const useGetCurrentTrack = () => {
 
   useEffect(() => {
     const updateTrack = async () => {
-      const res = await fetch("http://localhost:3000/now-playing");
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_BASE_URL}/now-playing`
+      );
       const data = await res.json();
 
       setCurrentTrack(data.track);

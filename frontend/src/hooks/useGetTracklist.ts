@@ -6,7 +6,9 @@ export const useGetTracklist = () => {
 
   useEffect(() => {
     const getTracklist = async () => {
-      const res = await fetch("http://localhost:3000/tracklist");
+      const res = await fetch(
+        `${import.meta.env.VITE_SERVER_BASE_URL}/tracklist`
+      );
       const data = await res.json();
 
       setTracklist(data.tracklist);
