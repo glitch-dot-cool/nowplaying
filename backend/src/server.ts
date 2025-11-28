@@ -14,7 +14,7 @@ const port = 3000;
 app.use(express.json());
 app.use(cors());
 
-let currentTrack: Track | null = null;
+let currentTrack: Track = { artist: "", title: "" };
 
 const rawTracklist = `
 oneohtrix point never - rodl glide
