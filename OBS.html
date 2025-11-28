@@ -171,7 +171,6 @@
 
     <script>
         // CONFIGURATION
-        const LOCAL_TRACKLIST_FILE_NAME = "nowplaying.txt";
         const DISPLAY_PREFIX = "now playing:"
         const FETCH_INTERVAL = 5000;
         const ENABLE_GLITCH_EFFECT = true;
@@ -181,12 +180,13 @@
 
         async function fetchTrack() {
             try {
-                const url = `${LOCAL_TRACKLIST_FILE_NAME}?cachebust=${Date.now()}`
+                const url = `http://localhost:3000/now-playing`
                 const response = await fetch(url);
-                const text = await response.text();
-                return text.trim();
+                const data = await response.json();
+
+                return `${data.track.artist} - ${data.track.title}`
             } catch (e) {
-                console.error(`Error reading ${LOCAL_TRACKLIST_FILE_NAME}`, e);
+                console.error(e);
                 return "";
             }
         }
