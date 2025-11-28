@@ -160,13 +160,17 @@
         #track.hidden {
             opacity: 0;
         }
+
+        .empty {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
 
     <div id="wrapper">
-        <div id="track"></div>
+        <div id="track" class="empty"></div>
     </div>
 
     <script>
@@ -206,6 +210,15 @@
             if (newTrack === currentTrack) return;
 
             const el = document.getElementById("track");
+
+            // if there is no track, completely hide the UI
+            // otherwise space from padding is visible w/ no text
+            if (!newTrack) {
+                el.classList.add("empty");
+            }
+
+            // if we are showing a track, make sure the empty class is removed
+            el.classList.remove("empty");
 
             el.classList.add("hidden");
 
