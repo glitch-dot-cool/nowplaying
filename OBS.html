@@ -187,8 +187,7 @@
                 const url = `http://localhost:3000/now-playing`
                 const response = await fetch(url);
                 const data = await response.json();
-
-                return `${data.track.artist} - ${data.track.title}`
+                return data
             } catch (e) {
                 console.error(e);
                 return "";
@@ -205,16 +204,25 @@
         }
 
         async function updateTrack() {
-            const newTrack = await fetchTrack();
-
-            if (newTrack === currentTrack) return;
+            const { track } = await fetchTrack();
+            const hasTrack = track.artist && track.title;
+            const newTrack = hasTrack ? `${track.artist} - ${track.title}` : ""
 
             const el = document.getElementById("track");
 
             // if there is no track, completely hide the UI
             // otherwise space from padding is visible w/ no text
-            if (!newTrack) {
+            if (!hasTrack) {
                 el.classList.add("empty");
+                el.textContent = "";
+                el.style.setProperty("--track-title", `""`);
+                currentTrack = "";
+                return;
+            }
+
+            // if the track hasn't changed, do nothing
+            if (newTrack === currentTrack) {
+                return;
             }
 
             // if we are showing a track, make sure the empty class is removed

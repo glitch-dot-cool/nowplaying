@@ -2,6 +2,7 @@ import "./App.css";
 import { Track } from "./components/Track";
 import { useGetCurrentTrack } from "./hooks/useGetCurrentTrack";
 import { useGetTracklist } from "./hooks/useGetTracklist";
+import { updateCurrentTrack } from "./utils/updateCurrentTrack";
 
 function App() {
   const tracklist = useGetTracklist();
@@ -9,6 +10,13 @@ function App() {
 
   return (
     <div>
+      <button
+        onClick={() => updateCurrentTrack({ artist: "", title: "" })}
+        className="track destructive"
+      >
+        clear current track
+      </button>
+
       {currentTrack.artist && (
         <h1 className="now-playing">
           now playing: {currentTrack.artist} - {currentTrack.title}
