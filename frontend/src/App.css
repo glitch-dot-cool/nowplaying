@@ -4,6 +4,13 @@ body {
   font-family: Roboto;
 }
 
+.now-playing-container {
+  position: sticky;
+  bottom: 0;
+  background-color: #212121;
+  padding: 1rem 0;
+}
+
 .now-playing {
   text-align: center;
 }
@@ -27,6 +34,10 @@ body {
 .track:hover {
   cursor: pointer;
   background-color: #464646;
+}
+
+.current-track {
+  color: #119900;
 }
 
 .destructive {

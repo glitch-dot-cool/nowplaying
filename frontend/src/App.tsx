@@ -17,23 +17,25 @@ function App() {
         clear current track
       </button>
 
-      {currentTrack.artist && (
-        <h1 className="now-playing">
-          now playing: {currentTrack.artist} - {currentTrack.title}
-        </h1>
-      )}
-
       <div className="tracklist-container">
         {tracklist.map((track) => {
           return (
             <Track
               key={track.title}
-              artist={track.artist}
-              title={track.title}
+              track={track}
+              currentTrack={currentTrack}
             />
           );
         })}
       </div>
+
+      {currentTrack.artist && (
+        <div className="now-playing-container">
+          <h1 className="now-playing">
+            now playing: {currentTrack.artist} - {currentTrack.title}
+          </h1>
+        </div>
+      )}
     </div>
   );
 }
