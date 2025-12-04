@@ -1,11 +1,15 @@
+import { useState } from "react";
 import "./App.css";
 import { Track } from "./components/Track";
 import { useGetCurrentTrack } from "./hooks/useGetCurrentTrack";
 import { useGetTracklist } from "./hooks/useGetTracklist";
+import { useGetTracklists } from "./hooks/useGetTracklists";
 import { updateCurrentTrack } from "./utils/updateCurrentTrack";
 
 function App() {
-  const tracklist = useGetTracklist();
+  const [selectedTracklist, setSelectedTracklist] = useState<string>("");
+  const tracklists = useGetTracklists();
+  const tracklist = useGetTracklist(selectedTracklist);
   const currentTrack = useGetCurrentTrack();
 
   return (
@@ -16,6 +20,19 @@ function App() {
       >
         clear current track
       </button>
+
+      <div>
+        {tracklists.map((title) => {
+          return (
+            <button
+              key={title}
+              onClick={(e) => setSelectedTracklist(e.currentTarget.textContent)}
+            >
+              {title}
+            </button>
+          );
+        })}
+      </div>
 
       <div className="tracklist-container">
         {tracklist.map((track) => {

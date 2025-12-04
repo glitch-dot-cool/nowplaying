@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import * as tracklists from "./tracklists";
 
 type Track = {
   artist: string;
@@ -16,46 +17,6 @@ app.use(cors());
 
 let currentTrack: Track = { artist: "", title: "" };
 
-const rawTracklist = `
-oneohtrix point never - rodl glide
-max cooper & rob clouth - candeleda
-lapalux - how the land became plastic
-hitori tori - pyphen (2025 remaster)
-aroma nice - sound ethics
-komposite - fragments
-blue noise & cenaceae - op. 110
-clark - globecore flats
-chewlie - dismantled
-aleph - recall
-ben chatwin - sirius (refracted)
-aja ireland - cryptid
-canoto - spotted
-free.99 - mindbreak
-pvas - terminal
-ven diagram - crushed by pebbles
-de grandi - testa dura
-normal pleasure - contempt
-djrum - hold
-blood of aza - somewhere we knew
-teig - a long way to go
-minilogue - hitchhiker's choice
-amaranth todd & natmou - hyphal bloom (oddlogic remix WIP)
-mercy system - if i were you
-villager - pause
-kinoteki & kelbin - cease and desist
-lithe - mainline
-mentrek - you should be here
-pruvan - too much poision
-ben pest & kursa - lard style (feat. scheme boy)
-33 below - blinded (onlythenext remix)
-ugandan speed trials - untitled 1 (regis mix)
-megra - put the lights out
-aloka - k1
-scuba & bakongo - onezerofive
-daphni - cloudy (kelbin remix)
-kloud king - essay memories
-`;
-
 const formatTracklist = (data: string): Tracklist => {
   return data
     .trim()
@@ -66,14 +27,27 @@ const formatTracklist = (data: string): Tracklist => {
     });
 };
 
-const tracklist = formatTracklist(rawTracklist);
-
 app.get("/now-playing", (_req, res) => {
   res.json({ track: currentTrack });
 });
 
-app.get("/tracklist", (_req, res) => {
-  res.json({ tracklist: tracklist });
+app.get("/tracklists", (_req, res) => {
+  const tracklistNames = Object.keys(tracklists);
+  res.json({ tracklists: tracklistNames });
+});
+
+app.get("/tracklist/:tracklist", (req, res) => {
+  const requestedTracklist = req.params.tracklist;
+
+  if (!(requestedTracklist in tracklists)) {
+    return res.status(404).json({ error: "Unknown tracklist" });
+  }
+
+  const selectedTracklist =
+    tracklists[requestedTracklist as keyof typeof tracklists];
+
+  const formattedTracklist = formatTracklist(selectedTracklist);
+  res.json({ tracklist: formattedTracklist });
 });
 
 app.put("/update-track", (req, res) => {
