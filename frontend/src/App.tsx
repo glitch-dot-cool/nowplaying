@@ -21,7 +21,7 @@ function App() {
         clear current track
       </button>
 
-      <div>
+      <div className="tracklist-titles">
         {tracklists.map((title) => {
           return (
             <button

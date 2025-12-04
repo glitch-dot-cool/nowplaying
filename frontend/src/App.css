@@ -2,6 +2,8 @@ body {
   background-color: #212121;
   color: #e1e1e1;
   font-family: Roboto;
+  padding: 1rem;
+  margin: 0;
 }
 
 button {
@@ -44,4 +46,13 @@ button:hover {
 
 .destructive {
   color: #dd3333;
+}
+
+.tracklist-titles {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
