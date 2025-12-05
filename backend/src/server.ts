@@ -73,6 +73,8 @@ app.post("/tracklist", async (req, res) => {
 
   const filePath = path.join(tracklistDir, `${playlistTitle}.json`);
   await writeFile(filePath, JSON.stringify(tracklist, null, 2));
+
+  return res.sendStatus(204);
 });
 
 app.listen(port, () => {
