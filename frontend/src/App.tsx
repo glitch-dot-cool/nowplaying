@@ -1,19 +1,13 @@
-import { useState } from "react";
 import { Route, Link } from "wouter";
+
 import "./App.css";
-import { Track } from "./components/Track";
-import { useGetCurrentTrack } from "./hooks/useGetCurrentTrack";
-import { useGetTracklist } from "./hooks/useGetTracklist";
+
 import { useGetTracklists } from "./hooks/useGetTracklists";
-import { updateCurrentTrack } from "./utils/updateCurrentTrack";
 import { AddTracklist } from "./components/AddTracklist";
+import { NowPlaying } from "./components/NowPlaying";
 
 function App() {
-  const [selectedTracklist, setSelectedTracklist] = useState<string>("");
-
   const { tracklists, getTracklists } = useGetTracklists();
-  const tracklist = useGetTracklist(selectedTracklist);
-  const currentTrack = useGetCurrentTrack();
 
   return (
     <div>
@@ -23,48 +17,7 @@ function App() {
       </nav>
 
       <Route path="/">
-        <div className="centered">
-          <button
-            onClick={() => updateCurrentTrack({ artist: "", title: "" })}
-            className="destructive"
-          >
-            clear current track
-          </button>
-        </div>
-
-        <div className="tracklist-titles">
-          {tracklists.map((title) => {
-            return (
-              <button
-                key={title}
-                onClick={(e) =>
-                  setSelectedTracklist(e.currentTarget.textContent)
-                }
-              >
-                {title}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="tracklist-container">
-          {tracklist.map((track) => {
-            return (
-              <Track
-                key={track.title}
-                track={track}
-                currentTrack={currentTrack}
-              />
-            );
-          })}
-        </div>
-        {currentTrack.artist && (
-          <div className="now-playing-container">
-            <h1 className="now-playing">
-              now playing: {currentTrack.artist} - {currentTrack.title}
-            </h1>
-          </div>
-        )}
+        <NowPlaying tracklists={tracklists} />
       </Route>
 
       <Route path="/add-tracklist">
