@@ -1,3 +1,6 @@
+# nowplaying files
+tracklist_json*
+
 # Logs
 logs
 *.log

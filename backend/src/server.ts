@@ -1,13 +1,20 @@
 import express from "express";
 import cors from "cors";
-import * as tracklists from "./tracklists";
+import { readdir, readFile, writeFile } from "fs/promises";
+import * as v from "valibot";
+import { CreatePlaylistSchema } from "./schemas";
+import { fileURLToPath } from "url";
+import path from "path";
 
 type Track = {
   artist: string;
   title: string;
 };
 
-type Tracklist = Track[];
+export type Tracklist = Track[];
+
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const tracklistDir = path.join(__dirname, "..", "tracklist_json");
 
 const app = express();
 const port = 3000;
@@ -17,37 +24,34 @@ app.use(cors());
 
 let currentTrack: Track = { artist: "", title: "" };
 
-const formatTracklist = (data: string): Tracklist => {
-  return data
-    .trim()
-    .split("\n")
-    .map((item) => {
-      const [artist, title] = item.split(" - ");
-      return { artist, title };
-    });
-};
-
 app.get("/now-playing", (_req, res) => {
   res.json({ track: currentTrack });
 });
 
-app.get("/tracklists", (_req, res) => {
-  const tracklistNames = Object.keys(tracklists);
+app.get("/tracklists", async (_req, res) => {
+  const files = await readdir(tracklistDir);
+
+  const tracklistNames = files
+    .filter((file) => file.endsWith(".json"))
+    .map((file) => {
+      const tracklistTitle = file.replace(/\.json$/, "");
+
+      return tracklistTitle;
+    });
+
   res.json({ tracklists: tracklistNames });
 });
 
-app.get("/tracklist/:tracklist", (req, res) => {
+app.get("/tracklist/:tracklist", async (req, res) => {
   const requestedTracklist = req.params.tracklist;
 
-  if (!(requestedTracklist in tracklists)) {
-    return res.status(404).json({ error: "Unknown tracklist" });
+  try {
+    const filePath = `${tracklistDir}/${requestedTracklist}.json`;
+    const tracklistData = JSON.parse(await readFile(filePath, "utf-8"));
+    res.json({ tracklist: tracklistData });
+  } catch (error) {
+    res.sendStatus(500);
   }
-
-  const selectedTracklist =
-    tracklists[requestedTracklist as keyof typeof tracklists];
-
-  const formattedTracklist = formatTracklist(selectedTracklist);
-  res.json({ tracklist: formattedTracklist });
 });
 
 app.put("/update-track", (req, res) => {
@@ -56,6 +60,19 @@ app.put("/update-track", (req, res) => {
     title: req.body.title,
   };
   res.json({ track: currentTrack });
+});
+
+app.post("/tracklist", async (req, res) => {
+  const result = v.safeParse(CreatePlaylistSchema, req.body);
+
+  if (!result.success) {
+    return res.status(400).json({ error: result.issues });
+  }
+
+  const { playlistTitle, tracklist } = result.output;
+
+  const filePath = path.join(tracklistDir, `${playlistTitle}.json`);
+  await writeFile(filePath, JSON.stringify(tracklist, null, 2));
 });
 
 app.listen(port, () => {

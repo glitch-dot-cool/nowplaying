@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import "./App.css";
 import { Track } from "./components/Track";
 import { useGetCurrentTrack } from "./hooks/useGetCurrentTrack";
@@ -8,9 +8,30 @@ import { updateCurrentTrack } from "./utils/updateCurrentTrack";
 
 function App() {
   const [selectedTracklist, setSelectedTracklist] = useState<string>("");
+
+  const [newTracklist, setNewTracklist] = useState<string>("");
+  const [newTracklistTitle, setNewTracklistTitle] = useState<string>("");
+
   const tracklists = useGetTracklists();
   const tracklist = useGetTracklist(selectedTracklist);
   const currentTrack = useGetCurrentTrack();
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const payload = {
+      playlistTitle: newTracklistTitle,
+      tracklist: newTracklist,
+    };
+
+    fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/tracklist`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
 
   return (
     <div>
@@ -53,6 +74,18 @@ function App() {
           </h1>
         </div>
       )}
+
+      <form onSubmit={handleSubmit}>
+        <input
+          value={newTracklistTitle}
+          onChange={(e) => setNewTracklistTitle(e.target.value)}
+        ></input>
+        <textarea
+          value={newTracklist}
+          onChange={(e) => setNewTracklist(e.target.value)}
+        />
+        <button type="submit">add tracklist</button>
+      </form>
     </div>
   );
 }
