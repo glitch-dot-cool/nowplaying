@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { useLocation } from "wouter";
 
 interface AddTracklistProps {
   onSubmit: () => Promise<void>;
@@ -7,6 +8,7 @@ interface AddTracklistProps {
 export const AddTracklist = ({ onSubmit }: AddTracklistProps) => {
   const [newTracklist, setNewTracklist] = useState<string>("");
   const [newTracklistTitle, setNewTracklistTitle] = useState<string>("");
+  const [, setLocation] = useLocation();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,6 +29,8 @@ export const AddTracklist = ({ onSubmit }: AddTracklistProps) => {
 
       // refetch all tracklists
       await onSubmit();
+      // navigate back to main page
+      setLocation("/");
     } catch (e) {
       console.error(e);
     }
