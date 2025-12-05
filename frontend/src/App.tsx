@@ -16,7 +16,6 @@ function App() {
 
   return (
     <div>
-      <button onClick={getTracklists}>get</button>
       <button
         onClick={() => updateCurrentTrack({ artist: "", title: "" })}
         className="track destructive"
