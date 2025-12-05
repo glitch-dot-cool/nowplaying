@@ -34,14 +34,20 @@ export const AddTracklist = ({ onSubmit }: AddTracklistProps) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        value={newTracklistTitle}
-        onChange={(e) => setNewTracklistTitle(e.target.value)}
-      ></input>
-      <textarea
-        value={newTracklist}
-        onChange={(e) => setNewTracklist(e.target.value)}
-      />
+      <label>
+        title:
+        <input
+          value={newTracklistTitle}
+          onChange={(e) => setNewTracklistTitle(e.target.value)}
+        />
+      </label>
+      <label>
+        tracklist:
+        <textarea
+          value={newTracklist}
+          onChange={(e) => setNewTracklist(e.target.value)}
+        />
+      </label>
       <button type="submit">add tracklist</button>
     </form>
   );
