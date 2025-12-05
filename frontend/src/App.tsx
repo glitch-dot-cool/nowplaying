@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Route, Link } from "wouter";
 import "./App.css";
 import { Track } from "./components/Track";
 import { useGetCurrentTrack } from "./hooks/useGetCurrentTrack";
@@ -16,47 +17,58 @@ function App() {
 
   return (
     <div>
-      <button
-        onClick={() => updateCurrentTrack({ artist: "", title: "" })}
-        className="track destructive"
-      >
-        clear current track
-      </button>
+      <nav>
+        <Link href="/">Home</Link>
+        <Link href="/add-tracklist">Add Tracklist</Link>
+      </nav>
 
-      <div className="tracklist-titles">
-        {tracklists.map((title) => {
-          return (
-            <button
-              key={title}
-              onClick={(e) => setSelectedTracklist(e.currentTarget.textContent)}
-            >
-              {title}
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="tracklist-container">
-        {tracklist.map((track) => {
-          return (
-            <Track
-              key={track.title}
-              track={track}
-              currentTrack={currentTrack}
-            />
-          );
-        })}
-      </div>
-
-      {currentTrack.artist && (
-        <div className="now-playing-container">
-          <h1 className="now-playing">
-            now playing: {currentTrack.artist} - {currentTrack.title}
-          </h1>
+      <Route path="/">
+        <div className="centered">
+          <button
+            onClick={() => updateCurrentTrack({ artist: "", title: "" })}
+            className="destructive"
+          >
+            clear current track
+          </button>
         </div>
-      )}
+        <div className="tracklist-titles">
+          {tracklists.map((title) => {
+            return (
+              <button
+                key={title}
+                onClick={(e) =>
+                  setSelectedTracklist(e.currentTarget.textContent)
+                }
+              >
+                {title}
+              </button>
+            );
+          })}
+        </div>
 
-      <AddTracklist onSubmit={getTracklists} />
+        <div className="tracklist-container">
+          {tracklist.map((track) => {
+            return (
+              <Track
+                key={track.title}
+                track={track}
+                currentTrack={currentTrack}
+              />
+            );
+          })}
+        </div>
+        {currentTrack.artist && (
+          <div className="now-playing-container">
+            <h1 className="now-playing">
+              now playing: {currentTrack.artist} - {currentTrack.title}
+            </h1>
+          </div>
+        )}
+      </Route>
+
+      <Route path="/add-tracklist">
+        <AddTracklist onSubmit={getTracklists} />
+      </Route>
     </div>
   );
 }
