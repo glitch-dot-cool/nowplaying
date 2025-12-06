@@ -12,8 +12,8 @@ function App() {
   return (
     <div>
       <nav>
-        <Link href="/">Home</Link>
-        <Link href="/add-tracklist">Add Tracklist</Link>
+        <Link href="/">home</Link>
+        <Link href="/add-tracklist">add tracklist</Link>
       </nav>
 
       <Route path="/">
