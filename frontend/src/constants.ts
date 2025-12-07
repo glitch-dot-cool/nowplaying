@@ -4,6 +4,8 @@ export const routes = {
   ADD_TRACKLIST: "add-tracklist",
 } as const;
 
+export const REFETCH_INTERVAL = 5000;
+
 export const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
 
 // api endpoints
