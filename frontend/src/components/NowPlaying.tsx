@@ -11,46 +11,50 @@ export const NowPlaying = ({ tracklists }: { tracklists: string[] }) => {
 
   return (
     <>
-      <div className="centered">
-        <button
-          onClick={() => updateCurrentTrack({ artist: "", title: "" })}
-          className="destructive"
-        >
-          clear current track
-        </button>
-      </div>
+      <main>
+        <div className="centered">
+          <button
+            onClick={() => updateCurrentTrack({ artist: "", title: "" })}
+            className="destructive"
+          >
+            clear current track
+          </button>
+        </div>
 
-      <div className="tracklist-titles">
-        {tracklists.map((title) => {
-          return (
-            <button
-              key={title}
-              onClick={(e) => setSelectedTracklist(e.currentTarget.textContent)}
-            >
-              {title}
-            </button>
-          );
-        })}
-      </div>
+        <div className="tracklist-titles">
+          {tracklists.map((title) => {
+            return (
+              <button
+                key={title}
+                onClick={(e) =>
+                  setSelectedTracklist(e.currentTarget.textContent)
+                }
+              >
+                {title}
+              </button>
+            );
+          })}
+        </div>
 
-      <div className="tracklist-container">
-        {tracklist.map((track) => {
-          return (
-            <Track
-              key={track.title}
-              track={track}
-              currentTrack={currentTrack}
-            />
-          );
-        })}
-      </div>
+        <div className="tracklist-container">
+          {tracklist.map((track) => {
+            return (
+              <Track
+                key={track.title}
+                track={track}
+                currentTrack={currentTrack}
+              />
+            );
+          })}
+        </div>
+      </main>
 
       {currentTrack.artist && (
-        <div className="now-playing-container">
+        <footer>
           <h1 className="now-playing">
             now playing: {currentTrack.artist} - {currentTrack.title}
           </h1>
-        </div>
+        </footer>
       )}
     </>
   );
