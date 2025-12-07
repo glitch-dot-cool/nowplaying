@@ -5,6 +5,7 @@ import * as v from "valibot";
 import { CreatePlaylistSchema } from "./schemas";
 import { fileURLToPath } from "url";
 import path from "path";
+import { existsSync, mkdirSync } from "fs";
 
 type Track = {
   artist: string;
@@ -15,6 +16,11 @@ export type Tracklist = Track[];
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const tracklistDir = path.join(__dirname, "..", "tracklist_json");
+
+// create tracklist_json directory if it doesn't already exist
+if (!existsSync(tracklistDir)) {
+  mkdirSync(tracklistDir, { recursive: true });
+}
 
 const app = express();
 const port = 3000;
