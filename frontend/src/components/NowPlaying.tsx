@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useGetCurrentTrack } from "../hooks/useGetCurrentTrack";
 import { useGetTracklist } from "../hooks/useGetTracklist";
-import { updateCurrentTrack } from "../utils/updateCurrentTrack";
+import { updateCurrentTrack } from "../utils/api";
 import { Track } from "./Track";
 
 export const NowPlaying = ({ tracklists }: { tracklists: string[] }) => {

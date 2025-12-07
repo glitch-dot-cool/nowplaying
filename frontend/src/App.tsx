@@ -5,6 +5,7 @@ import "./App.css";
 import { useGetTracklists } from "./hooks/useGetTracklists";
 import { AddTracklist } from "./components/AddTracklist";
 import { NowPlaying } from "./components/NowPlaying";
+import { routes } from "./constants";
 
 function App() {
   const { tracklists, getTracklists } = useGetTracklists();
@@ -12,15 +13,15 @@ function App() {
   return (
     <div>
       <nav>
-        <Link href="/">home</Link>
-        <Link href="/add-tracklist">add tracklist</Link>
+        <Link href={routes.HOME}>home</Link>
+        <Link href={routes.ADD_TRACKLIST}>add tracklist</Link>
       </nav>
 
-      <Route path="/">
+      <Route path={routes.HOME}>
         <NowPlaying tracklists={tracklists} />
       </Route>
 
-      <Route path="/add-tracklist">
+      <Route path={routes.ADD_TRACKLIST}>
         <AddTracklist onSubmit={getTracklists} />
       </Route>
     </div>

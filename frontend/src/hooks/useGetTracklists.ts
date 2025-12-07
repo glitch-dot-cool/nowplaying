@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { getTracklists as _getTracklists } from "../utils/api";
 
 export const useGetTracklists = () => {
   const [tracklists, setTracklists] = useState<string[]>([]);
 
   const getTracklists = useCallback(async () => {
-    const res = await fetch(
-      `${import.meta.env.VITE_SERVER_BASE_URL}/tracklists`
-    );
-    const data = await res.json();
+    const data = await _getTracklists();
 
     setTracklists(data.tracklists);
   }, []);

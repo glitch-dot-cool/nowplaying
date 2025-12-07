@@ -1,5 +1,5 @@
 import type { Track as TrackType } from "../types";
-import { updateCurrentTrack } from "../utils/updateCurrentTrack";
+import { updateCurrentTrack } from "../utils/api";
 
 interface TrackProps {
   track: TrackType;
