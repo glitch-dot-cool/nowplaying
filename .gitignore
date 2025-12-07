@@ -1,5 +1,5 @@
 # nowplaying files
-tracklist_json/*
+tracklist_json*
 
 # Logs
 logs
