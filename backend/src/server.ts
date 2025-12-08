@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { readdir, readFile, writeFile } from "fs/promises";
 import * as v from "valibot";
-import { CreatePlaylistSchema } from "./schemas";
+import { CreatePlaylistSchema } from "./schemas.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import { existsSync, mkdirSync } from "fs";
