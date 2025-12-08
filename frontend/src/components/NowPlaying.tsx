@@ -40,7 +40,7 @@ export const NowPlaying = ({ tracklists }: { tracklists: string[] }) => {
           {tracklist.map((track) => {
             return (
               <Track
-                key={track.title}
+                key={`${track.artist}${track.title}`}
                 artist={track.artist}
                 title={track.title}
                 currentArtist={currentTrack.artist}
