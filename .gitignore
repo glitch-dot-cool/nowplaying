@@ -1,5 +1,6 @@
 # nowplaying files
 backend/tracklist_json/*
+backend/build*
 
 # Logs
 logs
