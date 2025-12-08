@@ -1,22 +1,34 @@
-import type { Track as TrackType } from "../types";
+import { memo } from "react";
 import { updateCurrentTrack } from "../utils/api";
 
 interface TrackProps {
-  track: TrackType;
-  currentTrack: TrackType;
+  title: string;
+  artist: string;
+  currentTitle: string;
+  currentArtist: string;
 }
 
-export const Track = ({ track, currentTrack }: TrackProps) => {
-  const isCurrentlyPlaying =
-    JSON.stringify(track) === JSON.stringify(currentTrack);
+const getIsCurrentlyPlaying = ({
+  title,
+  artist,
+  currentTitle,
+  currentArtist,
+}: TrackProps) => {
+  return title === currentTitle && artist === currentArtist;
+};
+
+export const Track = memo((props: TrackProps) => {
+  const isCurrentlyPlaying = getIsCurrentlyPlaying(props);
   const isPlayingClass = isCurrentlyPlaying ? "current-track" : "";
 
   return (
     <button
-      onClick={() => updateCurrentTrack(track)}
+      onClick={() =>
+        updateCurrentTrack({ title: props.title, artist: props.artist })
+      }
       className={`track ${isPlayingClass}`}
     >
-      {track.artist} - {track.title}
+      {props.artist} - {props.title}
     </button>
   );
-};
+});

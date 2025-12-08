@@ -41,8 +41,10 @@ export const NowPlaying = ({ tracklists }: { tracklists: string[] }) => {
             return (
               <Track
                 key={track.title}
-                track={track}
-                currentTrack={currentTrack}
+                artist={track.artist}
+                title={track.title}
+                currentArtist={currentTrack.artist}
+                currentTitle={currentTrack.title}
               />
             );
           })}
