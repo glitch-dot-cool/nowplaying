@@ -6,19 +6,37 @@ import { Track } from "./Track";
 
 export const NowPlaying = ({ tracklists }: { tracklists: string[] }) => {
   const [selectedTracklist, setSelectedTracklist] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState("");
   const tracklist = useGetTracklist(selectedTracklist);
   const currentTrack = useGetCurrentTrack();
+
+  const filteredTracklist = tracklist.filter(({ artist, title }) => {
+    const normalizedSearchTerm = searchTerm.toLowerCase();
+    return (
+      artist.toLowerCase().includes(normalizedSearchTerm) ||
+      title.toLowerCase().includes(normalizedSearchTerm)
+    );
+  });
 
   return (
     <>
       <main>
-        {currentTrack && (
-          <div className="centered">
-            <button onClick={clearCurrentTrack} className="destructive">
-              clear current track
-            </button>
-          </div>
-        )}
+        <div className="now-playing-header">
+          <input
+            placeholder="filter tracklist"
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+
+          {currentTrack && (
+            <div className="centered">
+              <button onClick={clearCurrentTrack} className="destructive">
+                clear current track
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="tracklist-titles">
           {tracklists.map((title) => {
@@ -36,7 +54,7 @@ export const NowPlaying = ({ tracklists }: { tracklists: string[] }) => {
         </div>
 
         <div className="tracklist-container">
-          {tracklist.map((track) => {
+          {filteredTracklist.map((track) => {
             return (
               <Track
                 key={`${track.artist}${track.title}`}

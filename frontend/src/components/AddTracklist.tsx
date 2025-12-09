@@ -26,7 +26,7 @@ export const AddTracklist = ({ onSubmit }: AddTracklistProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="add-tracklist-form">
       <label>
         title:
         <input
