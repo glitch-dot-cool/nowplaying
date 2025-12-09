@@ -4,8 +4,17 @@ import { useGetTracklist } from "../hooks/useGetTracklist";
 import { clearCurrentTrack } from "../utils/api";
 import { Track } from "./Track";
 
-export const NowPlaying = ({ tracklists }: { tracklists: string[] }) => {
-  const [selectedTracklist, setSelectedTracklist] = useState<string>("");
+interface NowPlayingProps {
+  tracklists: string[];
+  selectedTracklist: string;
+  setSelectedTracklist: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const NowPlaying = ({
+  tracklists,
+  selectedTracklist,
+  setSelectedTracklist,
+}: NowPlayingProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const tracklist = useGetTracklist(selectedTracklist);
   const currentTrack = useGetCurrentTrack();

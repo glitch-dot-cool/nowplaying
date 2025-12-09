@@ -6,9 +6,11 @@ import { useGetTracklists } from "./hooks/useGetTracklists";
 import { AddTracklist } from "./components/AddTracklist";
 import { NowPlaying } from "./components/NowPlaying";
 import { routes } from "./constants";
+import { useState } from "react";
 
 function App() {
   const { tracklists, getTracklists } = useGetTracklists();
+  const [selectedTracklist, setSelectedTracklist] = useState("");
 
   return (
     <div>
@@ -18,7 +20,11 @@ function App() {
       </nav>
 
       <Route path={routes.HOME}>
-        <NowPlaying tracklists={tracklists} />
+        <NowPlaying
+          tracklists={tracklists}
+          selectedTracklist={selectedTracklist}
+          setSelectedTracklist={setSelectedTracklist}
+        />
       </Route>
 
       <Route path={routes.ADD_TRACKLIST}>
