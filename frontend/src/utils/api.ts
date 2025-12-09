@@ -32,6 +32,12 @@ export const updateCurrentTrack = async (newTrack: Track) => {
   return data;
 };
 
+export const clearCurrentTrack = async () => {
+  await fetch(`${SERVER_BASE_URL}/${endpoints.NOW_PLAYING}`, {
+    method: "DELETE",
+  });
+};
+
 export const addTracklist = async ({
   title,
   tracklist,

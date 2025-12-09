@@ -4,8 +4,8 @@ import { updateCurrentTrack } from "../utils/api";
 interface TrackProps {
   title: string;
   artist: string;
-  currentTitle: string;
-  currentArtist: string;
+  currentTitle?: string;
+  currentArtist?: string;
 }
 
 const getIsCurrentlyPlaying = ({

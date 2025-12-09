@@ -28,10 +28,15 @@ const port = 3000;
 app.use(express.json());
 app.use(cors());
 
-let currentTrack: Track = { artist: "", title: "" };
+let currentTrack: Track | null = null;
 
 app.get("/now-playing", (_req, res) => {
   res.json({ track: currentTrack });
+});
+
+app.delete("/now-playing", (_req, res) => {
+  currentTrack = null;
+  res.sendStatus(204);
 });
 
 app.get("/tracklists", async (_req, res) => {

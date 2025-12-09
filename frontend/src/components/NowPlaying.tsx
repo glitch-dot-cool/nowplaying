@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useGetCurrentTrack } from "../hooks/useGetCurrentTrack";
 import { useGetTracklist } from "../hooks/useGetTracklist";
-import { updateCurrentTrack } from "../utils/api";
+import { clearCurrentTrack } from "../utils/api";
 import { Track } from "./Track";
 
 export const NowPlaying = ({ tracklists }: { tracklists: string[] }) => {
@@ -12,14 +12,13 @@ export const NowPlaying = ({ tracklists }: { tracklists: string[] }) => {
   return (
     <>
       <main>
-        <div className="centered">
-          <button
-            onClick={() => updateCurrentTrack({ artist: "", title: "" })}
-            className="destructive"
-          >
-            clear current track
-          </button>
-        </div>
+        {currentTrack && (
+          <div className="centered">
+            <button onClick={clearCurrentTrack} className="destructive">
+              clear current track
+            </button>
+          </div>
+        )}
 
         <div className="tracklist-titles">
           {tracklists.map((title) => {
@@ -43,15 +42,15 @@ export const NowPlaying = ({ tracklists }: { tracklists: string[] }) => {
                 key={`${track.artist}${track.title}`}
                 artist={track.artist}
                 title={track.title}
-                currentArtist={currentTrack.artist}
-                currentTitle={currentTrack.title}
+                currentArtist={currentTrack?.artist}
+                currentTitle={currentTrack?.title}
               />
             );
           })}
         </div>
       </main>
 
-      {currentTrack.artist && (
+      {currentTrack?.artist && (
         <footer>
           <h1 className="now-playing">
             now playing: {currentTrack.artist} - {currentTrack.title}
