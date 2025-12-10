@@ -1,5 +1,5 @@
 import * as v from "valibot";
-import { Tracklist } from "./server";
+import { Tracklist } from "./server.js";
 
 const RawTracklistSchema = v.pipe(
   v.string(),
