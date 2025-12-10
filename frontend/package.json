@@ -9,7 +9,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "npm run build && vite preview --host"
+    "start": "vite preview --host"
   },
   "dependencies": {
     "react": "^19.2.0",
