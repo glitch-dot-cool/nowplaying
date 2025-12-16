@@ -15,7 +15,7 @@ const ParsedTracklistSchema = v.pipe(
 );
 
 export const CreatePlaylistSchema = v.object({
-  playlistTitle: v.string(),
+  playlistTitle: v.pipe(v.string(), v.minLength(1)),
   tracklist: ParsedTracklistSchema,
 });
 
