@@ -31,12 +31,14 @@ export const NowPlaying = ({
     <>
       <main>
         <div className="now-playing-header">
-          <input
-            placeholder="filter tracklist"
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          {selectedTracklist && (
+            <input
+              placeholder="filter tracklist"
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          )}
 
           {currentTrack && (
             <div className="centered">
