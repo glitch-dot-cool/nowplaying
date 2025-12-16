@@ -6,23 +6,35 @@ interface AddTracklistProps {
   onSubmit: () => Promise<void>;
 }
 
+type Error = {
+  path: string;
+  message: string;
+};
+
 export const AddTracklist = ({ onSubmit }: AddTracklistProps) => {
   const [newTracklist, setNewTracklist] = useState<string>("");
   const [newTracklistTitle, setNewTracklistTitle] = useState<string>("");
   const [, setLocation] = useLocation();
+  const [errors, setErrors] = useState<Error[] | null>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrors(null);
 
-    try {
-      await addTracklist({ title: newTracklistTitle, tracklist: newTracklist });
-      // refetch all tracklists
-      await onSubmit();
-      // navigate back to main page
-      setLocation("/");
-    } catch (e) {
-      console.error(e);
+    const res = await addTracklist({
+      title: newTracklistTitle,
+      tracklist: newTracklist,
+    });
+
+    if (res.errors) {
+      setErrors(res.errors);
+      return;
     }
+
+    // refetch all tracklists
+    await onSubmit();
+    // navigate back to main page
+    setLocation("/");
   };
 
   return (
@@ -42,6 +54,12 @@ export const AddTracklist = ({ onSubmit }: AddTracklistProps) => {
         />
       </label>
       <button type="submit">add tracklist</button>
+
+      {errors?.map((error) => (
+        <p key={error.message} className="error">
+          <span className="error-path">{error.path}</span> : {error.message}
+        </p>
+      ))}
     </form>
   );
 };

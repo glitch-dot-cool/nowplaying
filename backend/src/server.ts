@@ -77,7 +77,14 @@ app.post("/tracklist", async (req, res) => {
   const result = v.safeParse(CreatePlaylistSchema, req.body);
 
   if (!result.success) {
-    return res.status(400).json({ error: result.issues });
+    return res.status(400).json({
+      errors: result.issues.map((issue) => {
+        return {
+          path: issue.path?.reduce((acc, cur) => (acc += cur.key), ""),
+          message: issue.message,
+        };
+      }),
+    });
   }
 
   const { playlistTitle, tracklist } = result.output;

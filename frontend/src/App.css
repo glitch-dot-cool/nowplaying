@@ -100,8 +100,22 @@ textarea {
   color: #119900;
 }
 
-.destructive {
+.destructive,
+.error {
   color: #dd3333;
+}
+
+.error {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.error-path {
+  font-family: monospace;
+  padding: 2px;
+  background-color: #6c6c6c;
+  border-radius: 4px;
+  color: #fff;
 }
 
 .tracklist-titles {

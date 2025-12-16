@@ -50,11 +50,13 @@ export const addTracklist = async ({
     tracklist,
   };
 
-  return await fetch(`${SERVER_BASE_URL}/${endpoints.TRACKLIST}`, {
+  const res = await fetch(`${SERVER_BASE_URL}/${endpoints.TRACKLIST}`, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
       "Content-Type": "application/json",
     },
   });
+
+  return await res.json();
 };
