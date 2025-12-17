@@ -1,21 +1,16 @@
 import { useState, type FormEvent } from "react";
 import { useLocation } from "wouter";
-import { addTracklist } from "../utils/api";
+import { addTracklist, type FormattedServerError } from "../utils/api";
 
 interface AddTracklistProps {
   onSubmit: () => Promise<void>;
 }
 
-type Error = {
-  path: string;
-  message: string;
-};
-
 export const AddTracklist = ({ onSubmit }: AddTracklistProps) => {
   const [newTracklist, setNewTracklist] = useState<string>("");
   const [newTracklistTitle, setNewTracklistTitle] = useState<string>("");
   const [, setLocation] = useLocation();
-  const [errors, setErrors] = useState<Error[] | null>(null);
+  const [errors, setErrors] = useState<FormattedServerError[] | null>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

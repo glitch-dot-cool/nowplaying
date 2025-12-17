@@ -1,6 +1,11 @@
 import { endpoints, SERVER_BASE_URL } from "../constants";
 import type { Track } from "../types";
 
+export type FormattedServerError = {
+  path?: string;
+  message: string;
+};
+
 export const getCurrentTrack = async () => {
   const res = await fetch(`${SERVER_BASE_URL}/${endpoints.NOW_PLAYING}`);
   const data = await res.json();
@@ -59,11 +64,18 @@ export const addTracklist = async ({
     tracklist,
   };
 
-  return await fetch(`${SERVER_BASE_URL}/${endpoints.TRACKLIST}`, {
+  const res = await fetch(`${SERVER_BASE_URL}/${endpoints.TRACKLIST}`, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
       "Content-Type": "application/json",
     },
   });
+
+  if (!res.ok) {
+    const errors = (await res.json()) as FormattedServerError[];
+    return { ok: false, errors };
+  }
+
+  return { ok: true };
 };
