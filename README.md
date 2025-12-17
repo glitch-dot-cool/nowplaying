@@ -1,30 +1,35 @@
 # nowplaying
 
-a simple html-based application for displaying track titles in OBS.
+a simple application for displaying track titles in OBS.
 
-![demo image](./example.png)
+## how it works
 
-### how it works
+there are two components - one application you interact with to manage track lists and select the currently playing track, and a second (very simple) one that displays the currently playing track, which is intended to be used as a browser source overlay in OBS.
 
-very primitively - copy/paste a track title into `nowplaying.txt` and the application will poll it for changes. when it sees a change, it will fade out the old track title and fade in the new one. that's it.
+you can run both on the same machine (that you are streaming from), but it is designed to work over a local network, such that you can display the track on one machine and manage the currently playing track on another. i use it in this fashion - the "streaming machine" runs the application, and i access it remotely from a separate laptop in the dj booth.
 
-### how to use in OBS
+![demo image](./screenshot.png)
 
-add a `Browser` media source to your scene, select `local file`, and select `nowplaying.html`. configure whatever size you want, and that's it!
+tracklists are stored as simple json files locally. for now you cannot edit them (unless you do so manually), only add or remove them. i will maybe add editing, but for now this is mostly for my personal use. PRs are welcome.
 
-### configuration
+## starting and accessing the apps
 
-there are a few things you can tweak:
+from the root of this project, run `npm run dev` or `npm run start` to run both backend and frontend applications. by default the frontend application runs on port `3001` and the server runs on port `3000`.
 
-- `LOCAL_TRACKLIST_FILE_NAME`
-  - where the code expects the source file to exist
-  - default is `nowplaying.txt`
+## how to use in OBS
+
+add a Browser media source to your scene, select `local file`, and select `OBS.html`. configure whatever size you want, and that's it!
+
+## configuration
+
+there are a few things you can tweak (within `OBS.html`):
+
 - `DISPLAY_PREFIX`
   - this gets prepended to the track title
   - default is `now playing:`
 - `FETCH INTERVAL`
   - how quickly the code checks for a new track
-  - default is `5000`ms
+  - default is `1000`ms
 - `CSS_TRANSITION_TIME`
   - how long the fade in/out animations last
   - default is `500`ms
@@ -35,3 +40,10 @@ there are a few things you can tweak:
   - set the value to `false` to turn it off
 
 beyond that, simply update the css if you want to change font, size, colors, etc.
+
+### customizing ports
+
+if you want to change the ports:
+
+- you can change the default port for the frontend application by adding an `.env` file in the `frontend` directory and populating a `VITE_SERVER_BASE_URL` variable with your chosen port
+- the backend port (for now) must be changed by editing the `port` variable

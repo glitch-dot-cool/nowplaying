@@ -134,6 +134,7 @@
             opacity: 1;
             transition: opacity var(--fade-duration) ease;
             will-change: opacity;
+            text-transform: lowercase;
         }
 
         #track::before,
@@ -160,20 +161,23 @@
         #track.hidden {
             opacity: 0;
         }
+
+        .empty {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
 
     <div id="wrapper">
-        <div id="track"></div>
+        <div id="track" class="empty"></div>
     </div>
 
     <script>
         // CONFIGURATION
-        const LOCAL_TRACKLIST_FILE_NAME = "nowplaying.txt";
         const DISPLAY_PREFIX = "now playing:"
-        const FETCH_INTERVAL = 5000;
+        const FETCH_INTERVAL = 1000;
         const ENABLE_GLITCH_EFFECT = true;
         const CSS_TRANSITION_TIME = getCssTransitionTime();
 
@@ -181,12 +185,12 @@
 
         async function fetchTrack() {
             try {
-                const url = `${LOCAL_TRACKLIST_FILE_NAME}?cachebust=${Date.now()}`
+                const url = `http://localhost:3000/now-playing`
                 const response = await fetch(url);
-                const text = await response.text();
-                return text.trim();
+                const data = await response.json();
+                return data
             } catch (e) {
-                console.error(`Error reading ${LOCAL_TRACKLIST_FILE_NAME}`, e);
+                console.error(e);
                 return "";
             }
         }
@@ -201,11 +205,29 @@
         }
 
         async function updateTrack() {
-            const newTrack = await fetchTrack();
-
-            if (newTrack === currentTrack) return;
+            const { track } = await fetchTrack();
+            const hasTrack = track.artist && track.title;
+            const newTrack = hasTrack ? `${track.artist} - ${track.title}` : ""
 
             const el = document.getElementById("track");
+
+            // if there is no track, completely hide the UI
+            // otherwise space from padding is visible w/ no text
+            if (!hasTrack) {
+                el.classList.add("empty");
+                el.textContent = "";
+                el.style.setProperty("--track-title", `""`);
+                currentTrack = "";
+                return;
+            }
+
+            // if the track hasn't changed, do nothing
+            if (newTrack === currentTrack) {
+                return;
+            }
+
+            // if we are showing a track, make sure the empty class is removed
+            el.classList.remove("empty");
 
             el.classList.add("hidden");
 
