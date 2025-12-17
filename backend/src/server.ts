@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { readdir, readFile, writeFile } from "fs/promises";
+import { readdir, readFile, writeFile, unlink } from "fs/promises";
 import * as v from "valibot";
 import { CreatePlaylistSchema } from "./schemas.js";
 import { fileURLToPath } from "url";
@@ -63,6 +63,19 @@ app.get("/tracklist/:tracklist", async (req, res) => {
   } catch (error) {
     res.sendStatus(500);
   }
+});
+
+app.delete("/tracklist/:tracklist", async (req, res) => {
+  const requestedTracklist = req.params.tracklist;
+
+  try {
+    const filePath = `${tracklistDir}/${requestedTracklist}.json`;
+    await unlink(filePath);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+
+  res.sendStatus(204);
 });
 
 app.put("/update-track", (req, res) => {

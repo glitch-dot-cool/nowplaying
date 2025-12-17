@@ -14,4 +14,5 @@ export const endpoints = {
   TRACKLIST: "tracklist",
   TRACKLISTS: "tracklists",
   UPDATE_TRACK: "update-track",
+  DELETE_TRACKLIST: "tracklist",
 } as const;

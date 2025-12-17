@@ -24,6 +24,7 @@ function App() {
           tracklists={tracklists}
           selectedTracklist={selectedTracklist}
           setSelectedTracklist={setSelectedTracklist}
+          getTracklists={getTracklists}
         />
       </Route>
 

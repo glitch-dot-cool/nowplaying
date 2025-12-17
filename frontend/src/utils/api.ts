@@ -38,6 +38,15 @@ export const clearCurrentTrack = async () => {
   });
 };
 
+export const deleteTracklist = async (tracklistName: string) => {
+  await fetch(
+    `${SERVER_BASE_URL}/${endpoints.DELETE_TRACKLIST}/${tracklistName}`,
+    {
+      method: "DELETE",
+    }
+  );
+};
+
 export const addTracklist = async ({
   title,
   tracklist,
@@ -50,13 +59,11 @@ export const addTracklist = async ({
     tracklist,
   };
 
-  const res = await fetch(`${SERVER_BASE_URL}/${endpoints.TRACKLIST}`, {
+  return await fetch(`${SERVER_BASE_URL}/${endpoints.TRACKLIST}`, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
       "Content-Type": "application/json",
     },
   });
-
-  return await res.json();
 };

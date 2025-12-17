@@ -10,6 +10,8 @@ export const useGetTracklist = (tracklistName: string) => {
       if (tracklistName) {
         const data = await getTracklist(tracklistName);
         setTracklist(data.tracklist);
+      } else {
+        setTracklist([]);
       }
     };
 
