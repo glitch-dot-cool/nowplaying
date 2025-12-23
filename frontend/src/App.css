@@ -98,7 +98,9 @@ textarea {
 }
 
 .current-track {
-  color: #119900;
+  color: #34c123;
+  background-color: #505b50;
+  font-weight: bold;
 }
 
 .destructive,
