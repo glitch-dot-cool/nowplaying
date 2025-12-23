@@ -30,11 +30,11 @@ export const NowPlaying = ({
           {filteredTracklist.map((track) => {
             return (
               <Track
-                key={`${track.artist}${track.title}`}
+                key={track.id}
                 artist={track.artist}
                 title={track.title}
-                currentArtist={currentTrack?.artist}
-                currentTitle={currentTrack?.title}
+                id={track.id}
+                currentTrackId={currentTrack?.id}
               />
             );
           })}
