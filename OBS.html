@@ -206,7 +206,7 @@
 
         async function updateTrack() {
             const { track } = await fetchTrack();
-            const hasTrack = track.artist && track.title;
+            const hasTrack = !!track;
             const newTrack = hasTrack ? `${track.artist} - ${track.title}` : ""
 
             const el = document.getElementById("track");

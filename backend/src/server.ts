@@ -10,6 +10,7 @@ import { existsSync, mkdirSync } from "fs";
 type Track = {
   artist: string;
   title: string;
+  id: string;
 };
 
 export type Tracklist = Track[];
@@ -82,6 +83,7 @@ app.put("/update-track", (req, res) => {
   currentTrack = {
     artist: req.body.artist,
     title: req.body.title,
+    id: req.body.id,
   };
   res.json({ track: currentTrack });
 });
@@ -108,6 +110,6 @@ app.post("/tracklist", async (req, res) => {
   return res.sendStatus(204);
 });
 
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Server listening at http://0.0.0.0:${port}`);
 });

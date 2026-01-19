@@ -4,31 +4,40 @@ import { updateCurrentTrack } from "../utils/api";
 interface TrackProps {
   title: string;
   artist: string;
-  currentTitle?: string;
-  currentArtist?: string;
+  id: string;
+  currentTrackId?: string;
 }
 
-const getIsCurrentlyPlaying = ({
-  title,
-  artist,
-  currentTitle,
-  currentArtist,
-}: TrackProps) => {
-  return title === currentTitle && artist === currentArtist;
+const getIsTrackCurrentlyPlaying = ({
+  id,
+  currentTrackId,
+}: Pick<TrackProps, "id" | "currentTrackId">) => {
+  if (!currentTrackId) return false;
+
+  return id === currentTrackId;
 };
 
-export const Track = memo((props: TrackProps) => {
-  const isCurrentlyPlaying = getIsCurrentlyPlaying(props);
-  const isPlayingClass = isCurrentlyPlaying ? "current-track" : "";
+export const Track = memo(
+  ({ title, artist, id, currentTrackId }: TrackProps) => {
+    const isCurrentlyPlaying = getIsTrackCurrentlyPlaying({
+      id,
+      currentTrackId,
+    });
+    const isPlayingClass = isCurrentlyPlaying ? "current-track" : "";
 
-  return (
-    <button
-      onClick={() =>
-        updateCurrentTrack({ title: props.title, artist: props.artist })
-      }
-      className={`track ${isPlayingClass}`}
-    >
-      {props.artist} - {props.title}
-    </button>
-  );
-});
+    return (
+      <button
+        onClick={() =>
+          updateCurrentTrack({
+            title: title,
+            artist: artist,
+            id: id,
+          })
+        }
+        className={`track ${isPlayingClass}`}
+      >
+        {artist} - {title}
+      </button>
+    );
+  }
+);

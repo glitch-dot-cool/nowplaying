@@ -1,4 +1,4 @@
-import { Route, Link } from "wouter";
+import { Route } from "wouter";
 
 import "./App.css";
 
@@ -7,24 +7,28 @@ import { AddTracklist } from "./components/AddTracklist";
 import { NowPlaying } from "./components/NowPlaying";
 import { routes } from "./constants";
 import { useState } from "react";
+import { Header } from "./components/Header";
 
 function App() {
   const { tracklists, getTracklists } = useGetTracklists();
   const [selectedTracklist, setSelectedTracklist] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
     <div>
-      <nav>
-        <Link href={routes.HOME}>home</Link>
-        <Link href={routes.ADD_TRACKLIST}>add tracklist</Link>
-      </nav>
+      <Header
+        tracklistTitles={tracklists}
+        selectedTracklist={selectedTracklist}
+        setSelectedTracklist={setSelectedTracklist}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        getTracklists={getTracklists}
+      />
 
       <Route path={routes.HOME}>
         <NowPlaying
-          tracklists={tracklists}
           selectedTracklist={selectedTracklist}
-          setSelectedTracklist={setSelectedTracklist}
-          getTracklists={getTracklists}
+          searchTerm={searchTerm}
         />
       </Route>
 

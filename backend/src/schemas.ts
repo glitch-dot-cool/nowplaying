@@ -1,5 +1,6 @@
 import * as v from "valibot";
 import { Tracklist } from "./server.js";
+import crypto from "node:crypto";
 
 const RawTracklistSchema = v.pipe(
   v.string(),
@@ -25,6 +26,6 @@ const formatTracklist = (data: string): Tracklist => {
     .split("\n")
     .map((item) => {
       const [artist, title] = item.split(" - ");
-      return { artist, title };
+      return { artist, title, id: crypto.randomUUID() };
     });
 };

@@ -12,9 +12,41 @@ you can run both on the same machine (that you are streaming from), but it is de
 
 tracklists are stored as simple json files locally. for now you cannot edit them (unless you do so manually), only add or remove them. i will maybe add editing, but for now this is mostly for my personal use. PRs are welcome.
 
-## starting and accessing the apps
+# installation
 
-from the root of this project, run `npm run dev` or `npm run start` to run both backend and frontend applications. by default the frontend application runs on port `3001` and the server runs on port `3000`.
+## requirements
+
+- docker
+
+OR
+
+- node.js >= 22
+
+## run the app (in production mode)
+
+```bash
+cd <location_of_this_repo>
+docker compose up
+```
+
+navigate to `localhost` in your browser
+
+## run the app (in dev mode)
+
+```bash
+cd <location of this repo>
+npm run docker:dev
+```
+
+OR if forgoing docker:
+
+```bash
+cd <location of this repo>
+npm run install
+npm run dev
+```
+
+using either approach, the app will be exposed on `localhost:3001` by default.
 
 ## how to use in OBS
 
@@ -40,10 +72,3 @@ there are a few things you can tweak (within `OBS.html`):
   - set the value to `false` to turn it off
 
 beyond that, simply update the css if you want to change font, size, colors, etc.
-
-### customizing ports
-
-if you want to change the ports:
-
-- you can change the default port for the frontend application by adding an `.env` file in the `frontend` directory and populating a `VITE_SERVER_BASE_URL` variable with your chosen port
-- the backend port (for now) must be changed by editing the `port` variable

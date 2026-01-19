@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "install": "cd frontend && npm i && cd ../backend && npm i",
     "build": "npm run build-backend && npm run build-frontend",
     "build-backend": "npm --prefix backend run build",
     "build-frontend": "npm --prefix frontend run build",
@@ -11,7 +12,11 @@
     "start-frontend": "npm --prefix frontend run start",
     "dev": "npm run dev-backend & npm run dev-frontend",
     "dev-backend": "npm --prefix backend run dev",
-    "dev-frontend": "npm --prefix frontend run dev-lan"
+    "dev-frontend": "npm --prefix frontend run dev-lan",
+    "docker:dev": "docker compose -f docker-compose.dev.yaml up --build",
+    "docker:prod": "docker compose up --build",
+    "docker:down": "docker compose down",
+    "docker:reset": "docker compose down -v --remove-orphans"
   },
   "author": "alex gohorel",
   "description": "a simple app for showing track titles in OBS"
