@@ -6,7 +6,18 @@ export const routes = {
 
 export const REFETCH_INTERVAL = 1000;
 
-export const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
+const getServerBaseUrl = () => {
+  if (import.meta.env.VITE_SERVER_BASE_URL) {
+    return import.meta.env.VITE_SERVER_BASE_URL;
+  }
+
+  // fallback to current protocol + hostname + default port for backend if no env var set
+  const protocol = window.location.protocol;
+  const hostname = window.location.hostname;
+  return `${protocol}//${hostname}:3000`;
+};
+
+export const SERVER_BASE_URL = getServerBaseUrl();
 
 // api endpoints
 export const endpoints = {
